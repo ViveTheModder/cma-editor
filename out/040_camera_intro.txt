@@ -1,0 +1,72 @@
+[ROT-Y]
+Value (at Frame 0.0): -0.028533582
+Value (at Frame 74.0): 0.50038975
+Value (at Frame 75.0): 0.071053915
+Value (at Frame 112.0): 0.0124129215
+Value (at Frame 120.0): 0.00822428
+[ROT-X]
+Value (at Frame 0.0): -3.5615366
+Value (at Frame 4.0): -3.4008946
+Value (at Frame 8.0): -3.2492645
+Value (at Frame 12.0): -3.1062095
+Value (at Frame 16.0): -2.9712934
+Value (at Frame 20.0): -2.8440797
+Value (at Frame 24.0): -2.724132
+Value (at Frame 28.0): -2.6110137
+Value (at Frame 32.0): -2.5042882
+Value (at Frame 36.0): -2.4035192
+Value (at Frame 40.0): -2.30827
+Value (at Frame 44.0): -2.2181044
+Value (at Frame 48.0): -2.1325858
+Value (at Frame 52.0): -2.0512776
+Value (at Frame 56.0): -1.9737436
+Value (at Frame 60.0): -1.8995471
+Value (at Frame 64.0): -1.8282516
+Value (at Frame 68.0): -1.7594206
+Value (at Frame 72.0): -1.6926178
+Value (at Frame 74.0): -1.6598406
+Value (at Frame 75.0): -0.21470793
+Value (at Frame 112.0): -0.2863828
+Value (at Frame 120.0): -0.29150242
+[ROT-Z]
+Value (at Frame 0.0): -0.0
+Value (at Frame 74.0): -0.045203265
+Value (at Frame 75.0): -8.877455E-19
+Value (at Frame 112.0): -0.0
+Value (at Frame 120.0): 2.2639117E-19
+[POS-X]
+Value (at Frame 0.0): -11.73813
+Value (at Frame 4.0): -7.211869
+Value (at Frame 8.0): -3.2123806
+Value (at Frame 12.0): 0.29273316
+Value (at Frame 16.0): 3.3358717
+Value (at Frame 20.0): 5.9494333
+Value (at Frame 24.0): 8.165817
+Value (at Frame 28.0): 10.017421
+Value (at Frame 32.0): 11.536645
+Value (at Frame 36.0): 12.755886
+Value (at Frame 40.0): 13.707544
+Value (at Frame 44.0): 14.424019
+Value (at Frame 48.0): 14.937706
+Value (at Frame 52.0): 15.281007
+Value (at Frame 56.0): 15.486319
+Value (at Frame 60.0): 15.586041
+Value (at Frame 64.0): 15.612573
+Value (at Frame 68.0): 15.598311
+Value (at Frame 72.0): 15.575656
+Value (at Frame 74.0): 15.571305
+Value (at Frame 75.0): 1.9982511
+Value (at Frame 112.0): 5.709764
+Value (at Frame 120.0): 5.974872
+[POS-Y]
+Value (at Frame 0.0): -10.51063
+Value (at Frame 74.0): -1.9177307
+Value (at Frame 75.0): -13.333148
+Value (at Frame 112.0): -8.198032
+Value (at Frame 120.0): -7.771319
+[POS-Z]
+Value (at Frame 0.0): 28.753786
+Value (at Frame 74.0): -3.4411423
+Value (at Frame 75.0): -6.4500613
+Value (at Frame 112.0): -12.462682
+Value (at Frame 120.0): -12.892155

@@ -1,0 +1,24 @@
+[POS-X]
+Value (at Frame 0.0): 2.3296096
+Value (at Frame 98.0): 4.7457995
+Value (at Frame 118.0): 4.7457995
+[POS-Y]
+Value (at Frame 0.0): -11.526667
+Value (at Frame 98.0): -16.391743
+Value (at Frame 118.0): -16.391743
+[POS-Z]
+Value (at Frame 0.0): -22.234783
+Value (at Frame 98.0): -42.30345
+Value (at Frame 118.0): -42.30345
+[ROT-Y]
+Value (at Frame 0.0): -0.18848892
+Value (at Frame 98.0): -0.46924117
+Value (at Frame 118.0): -0.46924117
+[ROT-X]
+Value (at Frame 0.0): -0.12566371
+Value (at Frame 98.0): -0.1594382
+Value (at Frame 118.0): -0.1594382
+[ROT-Z]
+Value (at Frame 0.0): -0.0
+Value (at Frame 98.0): -7.028033E-18
+Value (at Frame 118.0): -7.028033E-18
