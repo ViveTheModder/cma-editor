@@ -109,7 +109,7 @@ public class MainApp
 				currCMA.readInt(); //skip first 4 bytes (a set of unknown flags)
 				float keyframe = LittleEndian.getFloat(currCMA.readFloat());
 				float value = LittleEndian.getFloat(currCMA.readFloat());
-				if (lang.equals("es")) output+="Value (at Frame "+keyframe+"): "+value+"\n";
+				if (!lang.equals("es")) output+="Value (at Frame "+keyframe+"): "+value+"\n";
 				else output+="Valor (en el Punto "+keyframe+"): "+value+"\n";
 				currCMA.seek(currCMA.getFilePointer()+20); //skip rest of bytes
 			}
