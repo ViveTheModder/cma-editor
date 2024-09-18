@@ -1,9 +1,10 @@
 package cmd;
-//CMA (Camera) Editor by ViveTheModder
+//CMA (Camera) Editor v1.1 by ViveTheModder
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.Locale;
 
 public class MainApp 
 {
@@ -18,6 +19,34 @@ public class MainApp
 	static final String CMA_PATH = "./cma/";
 	static final String OUT_PATH = "./out/";
 	static final String[] SECTION_NAMES = {"POS-X","POS-Y","POS-Z","ROT-Y","ROT-X","ROT-Z"};
+	static final String[] CONSOLE_TEXT = 
+	{	//ENGLISH: help text (0), //argument-related text (1-2), //CMA-related text (3-5)
+		"Read and write CMA contents for both PS2 & Wii versions of Budokai Tenkaichi games.\n"
+		+ "Here is a list of all the arguments that can be used. Use -h or -help to print this out again.\n\n"
+		+ "* -r --> Read CMA files and write their contents in *.txt files with the same file names.\n"
+		+ "* -wm -> Overwrite CMA files by multiplying their contents by a coefficient.\n"
+		+ "* -wa -> Overwrite CMA files by adding a coefficient to their contents.\n\n"
+		+ "For the write commands, the first argument must be the number of the section that will be edited:\n"
+		+ "0 = POS-X, 1 = POS-Y, 2 = POS-Z, 3 = ROT-Y, 4 = ROT-X, 5 = ROT-Z.\n"
+		+ "NOTE: For this program, X is left/right, Y is up/down, Z is back/forward.\n\n"
+		+ "As for the second argument, it must be a coefficient (whole number or decimal).\n",
+		"Too many arguments have been provided. Only two arguments are allowed.",
+		"A valid set of arguments must be provided. Use -h for help.",
+		"Skipping faulty CMA file ", "Reading CMA file ", "Overwriting CMA file ",
+		//SPANISH (courtesy of MetalFrieza3000): help text (6), //argument-related text (7-8), //CMA-related text (9-11)
+		"Lee y Escribe los contenidos de un CMA para las versiones de PS2 y Wii de los juegos de Budokai Tenkaichi.\n"
+		+ "Esta es la lista de todos los argumentos que pueden usarse. Usa -h o -help para eseñar esto otra vez.\n\n"
+		+ "* -r --> Lee los archivos CMA y escribe sus contenidos en archivos .txt con el mismo nombre de archivo.\n"
+		+ "* -wm -> Sobrescribe los archivos CMA multiplicando sus contenidos por un coeficiente.\n"
+		+ "* -wa -> Sobrescribe los archivos CMA sumando un coeficiente a sus contenidos.\n\n"
+		+ "Para los comandos escritos, el primer argumento debe ser el numero de la seccion que sera editada:\n"
+		+ "0 = POS-X, 1 = POS-Y, 2 = POS-Z, 3 = ROT-Y, 4 = ROT-X, 5 = ROT-Z.\n"
+		+ "NOTA: Para este programa, X es Izquierda/Derecha, Y es Arriba/Abajo, Z es Atras/Delante.\n\n"
+		+ "Para el Segundo Argumente, debe ser un coeficiente (Numero entero o Decimal).\n", 
+		"Se han proporcionado demasiados argumentos. Solo 2 argumentos estan permitidos.", 
+		"Debe proporcionarse un set de argumentos validos. Usa -h para ayuda.", 
+		"Saltando archivo CMA dañado ", "Leyendo archivo CMA ", "Escribiendo archivo CMA "
+	};
 	
 	public static boolean isFaultyCMA() throws IOException
 	{
@@ -107,22 +136,17 @@ public class MainApp
 		}
 	}
 	public static void main(String[] args) throws IOException 
-	{
-		String helpText = "Read and write CMA contents for both PS2 & Wii versions of Budokai Tenkaichi games.\n"
-		+ "Here is a list of all the arguments that can be used. Use -h or -help to print this out again.\n\n"
-		+ "* -r --> Read CMA files and write their contents in *.txt files with the same file names.\n"
-		+ "* -wm -> Overwrite CMA files by multiplying their contents by a coefficient.\n"
-		+ "* -wa -> Overwrite CMA files by adding a coefficient to their contents.\n\n"
-		+ "For the write commands, the first argument must be the number of the section that will be edited:\n"
-		+ "0 = POS-X, 1 = POS-Y, 2 = POS-Z, 3 = ROT-Y, 4 = ROT-X, 5 = ROT-Z.\n"
-		+ "NOTE: For this program, X is left/right, Y is up/down, Z is back/forward.\n\n"
-		+ "As for the second argument, it must be a coefficient (whole number or decimal).\n";
+	{		
+		Locale loc = Locale.getDefault(Locale.Category.FORMAT);
+		String lang = loc.getLanguage();
 		boolean hasReadArg=false, hasMultiplyArg=false;
-		int sectionID=-1; float coefficient=1;
+		int consTextIndex=0, sectionID=-1; float coefficient=1;
 		
+		if (lang.equals("es")) consTextIndex+=6;
 		if (args.length>3)
 		{
-			System.out.println("Too many arguments have been provided. Only two arguments are allowed."); System.exit(1);
+			consTextIndex+=1;
+			System.out.println(CONSOLE_TEXT[consTextIndex]); System.exit(1);
 		}
 		else if (args.length==3)
 		{
@@ -144,12 +168,13 @@ public class MainApp
 			if (args[0].equals("-r")) hasReadArg=true;
 			if (args[0].equals("-h"))
 			{
-				System.out.println(helpText); System.exit(0);
+				System.out.println(CONSOLE_TEXT[consTextIndex]); System.exit(0);
 			}
 		}
 		else
 		{
-			System.out.println("A valid set of arguments must be provided. Use -h for help."); System.exit(1);
+			consTextIndex+=2;
+			System.out.println(CONSOLE_TEXT[consTextIndex]); System.exit(1);
 		}		
 		
 		File folder = new File(CMA_PATH), outputTxt;
@@ -163,15 +188,20 @@ public class MainApp
 		
 		for (cmaIndex=0; cmaIndex<cmaPaths.length; cmaIndex++)
 		{
+			consTextIndex=0;
+			if (lang.equals("es")) consTextIndex+=6;
+			
 			currCMA = cmaFiles[cmaIndex];
 			String fileName = cmaPaths[cmaIndex].getName();
 			if (isFaultyCMA()) 
 			{
-				System.out.println("Skipping faulty CMA file..."); continue;
+				consTextIndex+=3;
+				System.out.println(CONSOLE_TEXT[consTextIndex]+fileName); continue;
 			}
 			if (hasReadArg) 
 			{
-				System.out.println("Reading "+fileName+" contents...");
+				consTextIndex+=4;
+				System.out.println(CONSOLE_TEXT[consTextIndex]+fileName);
 				outputTxt = new File(OUT_PATH+fileName.replace(".cma", ".txt"));
 				fw = new FileWriter(outputTxt);
 				String output = readCMA();
@@ -180,7 +210,8 @@ public class MainApp
 			}
 			else
 			{
-				System.out.println("Overwriting "+fileName+"'s "+SECTION_NAMES[1]+" contents...");
+				consTextIndex+=5;
+				System.out.println(CONSOLE_TEXT[consTextIndex]+fileName);
 				writeCMA(sectionID,coefficient,hasMultiplyArg);
 			}
 		}

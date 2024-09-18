@@ -21,12 +21,4 @@ public class LittleEndian
 		bb.order(ByteOrder.LITTLE_ENDIAN);
 		return bb.getInt();
 	}
-	public static short getShort(short data)
-	{
-		if (MainApp.isForWii) return data;
-		ByteBuffer bb = ByteBuffer.allocate(2);
-		bb.asShortBuffer().put(data);
-		bb.order(ByteOrder.LITTLE_ENDIAN);
-		return bb.getShort();
-	}
 }
