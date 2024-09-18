@@ -16,6 +16,7 @@ public class MainApp
 	static int[] cmaSectionOffsets = new int[6]; 
 	static int[] cmaSectionPoints = new int[6];
 	static RandomAccessFile currCMA;
+	static String lang;
 	static final String CMA_PATH = "./cma/";
 	static final String OUT_PATH = "./out/";
 	static final String[] SECTION_NAMES = {"POS-X","POS-Y","POS-Z","ROT-Y","ROT-X","ROT-Z"};
@@ -108,7 +109,8 @@ public class MainApp
 				currCMA.readInt(); //skip first 4 bytes (a set of unknown flags)
 				float keyframe = LittleEndian.getFloat(currCMA.readFloat());
 				float value = LittleEndian.getFloat(currCMA.readFloat());
-				output+="Value (at Frame "+keyframe+"): "+value+"\n";
+				if (lang.equals("es")) output+="Value (at Frame "+keyframe+"): "+value+"\n";
+				else output+="Valor (en el Punto "+keyframe+"): "+value+"\n";
 				currCMA.seek(currCMA.getFilePointer()+20); //skip rest of bytes
 			}
 		}
@@ -138,7 +140,7 @@ public class MainApp
 	public static void main(String[] args) throws IOException 
 	{		
 		Locale loc = Locale.getDefault(Locale.Category.FORMAT);
-		String lang = loc.getLanguage();
+		lang = loc.getLanguage();
 		boolean hasReadArg=false, hasMultiplyArg=false;
 		int consTextIndex=0, sectionID=-1; float coefficient=1;
 		
