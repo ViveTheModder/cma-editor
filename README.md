@@ -1,5 +1,8 @@
 # cma-editor
 **Read** and **write** contents of **camera files** for both **PS2** &amp; **Wii** versions of the **Budokai Tenkaichi** games.
+
+Text available in both English and Spanish. More languages can be added if people are willing to translate 6 lines per language.
+
 Requires Java SE 8 or higher.
 
 # Preview/Usage
