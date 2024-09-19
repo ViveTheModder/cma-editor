@@ -1,3 +1,11 @@
+Duration: 3.0166667 s
+ROT-Y Points: 38
+ROT-X Points: 38
+ROT-Z Points: 38
+POS-X Points: 38
+POS-Y Points: 38
+POS-Z Points: 38
+
 [ROT-Y]
 Value (at Frame 0.0): -0.3246198
 Value (at Frame 5.0): -0.3405236

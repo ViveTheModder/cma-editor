@@ -1,5 +1,5 @@
 package cmd;
-//CMA (Camera) Editor v1.1 by ViveTheModder
+//CMA (Camera) Editor v1.2 by ViveTheModder
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -46,7 +46,19 @@ public class MainApp
 		+ "Para el Segundo Argumente, debe ser un coeficiente (Numero entero o Decimal).\n", 
 		"Se han proporcionado demasiados argumentos. Solo 2 argumentos estan permitidos.", 
 		"Debe proporcionarse un set de argumentos validos. Usa -h para ayuda.", 
-		"Saltando archivo CMA dañado ", "Leyendo archivo CMA ", "Escribiendo archivo CMA "
+		"Saltando archivo CMA dañado ", "Leyendo archivo CMA ", "Escribiendo archivo CMA ",
+		//PORTUGUESE (courtesy of KyokoAny): help text (12), argument-related text (13-14), CMA-related text (15-17)
+		"Lê e escreve os conteúdos dos arquivos CMA para ambas as versões de PS2 e Wii dos jogos Budokai Tenkaichi.\n"
+		+ "Aqui está a lista de todos os argumentos que podem ser usados. Use -h ou -help para recarregar a lista novamente.\n\n"
+		+ "* -r --> Lê os arquivos CMA e escreve os conteúdos deles em arquivos *.txt com o mesmo nome dos arquivos.\n"
+		+ "* -wm -> Sobrescreve os arquivos CMA multiplicando o conteúdo dele por um coeficiente.\n\n"
+		+ "Para a escrita dos comandos, o primeiro argumento precisa ser um número da seção que vai ser editada:\n"
+		+ "0 = POS-X, 1 = POS-Y, 2 = POS-Z, 3 = ROT-Y, 4 = ROT-X, 5 = ROT-Z.\n"
+		+ "NOTA: Para esse programa, X é esquerda/direita, Y é cima/baixo, Z é para trás/para frente.\n\n"
+		+ "Como um segundo argumento, ele precisa ser um coeficiente (número inteiro ou decimal).\n",
+		"Muitos argumentos foram oferecidos. Apenas dois argumentos são permitidos.",
+		"Um conjunto válido de argumentos precisam ser oferecidos. Use -h para obter ajuda.",
+		"Pulando arquivo CMA defeituoso ", "Lendo arquivo CMA ", "Sobrescrevendo arquivo CMA "		
 	};
 	
 	public static boolean isFaultyCMA() throws IOException
@@ -98,6 +110,20 @@ public class MainApp
 	{
 		String sectionName=null, output="";
 		int cameraPoints;
+		
+		if (lang.equals("es")) output+="Duracion: "+(cmaDuration/60)+" s\n";
+		else if (lang.equals("pt")) output+="Duração: "+(cmaDuration/60)+" s\n";
+		else output+="Duration: "+(cmaDuration/60)+" s\n";
+		for (int i=0; i<cmaSectionTotal; i++)
+		{
+			cameraPoints = cmaSectionPoints[cmaSectionOrder[i]];
+			sectionName = SECTION_NAMES[cmaSectionOrder[i]];
+			if (lang.equals("es")) output+=sectionName+" Puntos: "+cameraPoints+"\n";
+			else if (lang.equals("pt")) output+=sectionName+" Pontos: "+cameraPoints+"\n";
+			else output+=sectionName+" Points: "+cameraPoints+"\n";
+		}
+		output+="\n";
+		
 		currCMA.seek(cmaSectionOffsets[cmaSectionOrder[0]]);
 		for (int i=0; i<cmaSectionTotal; i++)
 		{
@@ -109,8 +135,9 @@ public class MainApp
 				currCMA.readInt(); //skip first 4 bytes (a set of unknown flags)
 				float keyframe = LittleEndian.getFloat(currCMA.readFloat());
 				float value = LittleEndian.getFloat(currCMA.readFloat());
-				if (!lang.equals("es")) output+="Value (at Frame "+keyframe+"): "+value+"\n";
-				else output+="Valor (en el Punto "+keyframe+"): "+value+"\n";
+				if (lang.equals("es")) output+="Valor (en el Punto "+keyframe+"): "+value+"\n";
+				else if (lang.equals("pt")) output+="Valor (no Ponto "+keyframe+"): "+value+"\n";
+				else output+="Value (at Frame "+keyframe+"): "+value+"\n";
 				currCMA.seek(currCMA.getFilePointer()+20); //skip rest of bytes
 			}
 		}
@@ -120,7 +147,18 @@ public class MainApp
 	{
 		if (sectionID<0 || sectionID>5)
 		{
-			System.out.println("Invalid section provided! Exiting..."); return;
+			if (lang.equals("es"))
+			{
+				System.out.println("Numero de seccion equivocado! Saliendo..."); return;
+			}
+			else if (lang.equals("pt"))
+			{
+				System.out.println("Número de seção errado! Saindo..."); return;
+			}
+			else 
+			{
+				System.out.println("Invalid section number! Exiting..."); return;
+			}
 		}
 		currCMA.seek(cmaSectionOffsets[sectionID]);
 		for (int i=0; i<cmaSectionPoints[sectionID]; i++)
@@ -139,12 +177,15 @@ public class MainApp
 	}
 	public static void main(String[] args) throws IOException 
 	{		
+		boolean hasReadArg=false, hasMultiplyArg=false;
+		double endForCMA, startForCMA, time;
+		float coefficient=1; int consTextIndex=0, sectionID=-1;
+		
 		Locale loc = Locale.getDefault(Locale.Category.FORMAT);
 		lang = loc.getLanguage();
-		boolean hasReadArg=false, hasMultiplyArg=false;
-		int consTextIndex=0, sectionID=-1; float coefficient=1;
-		
 		if (lang.equals("es")) consTextIndex+=6;
+		if (lang.equals("pt")) consTextIndex+=12;
+		
 		if (args.length>3)
 		{
 			consTextIndex+=1;
@@ -192,6 +233,7 @@ public class MainApp
 		{
 			consTextIndex=0;
 			if (lang.equals("es")) consTextIndex+=6;
+			if (lang.equals("pt")) consTextIndex+=12;
 			
 			currCMA = cmaFiles[cmaIndex];
 			String fileName = cmaPaths[cmaIndex].getName();
@@ -200,10 +242,11 @@ public class MainApp
 				consTextIndex+=3;
 				System.out.println(CONSOLE_TEXT[consTextIndex]+fileName); continue;
 			}
+			startForCMA = System.currentTimeMillis();
 			if (hasReadArg) 
 			{
 				consTextIndex+=4;
-				System.out.println(CONSOLE_TEXT[consTextIndex]+fileName);
+				System.out.print(CONSOLE_TEXT[consTextIndex]+fileName+"... ");
 				outputTxt = new File(OUT_PATH+fileName.replace(".cma", ".txt"));
 				fw = new FileWriter(outputTxt);
 				String output = readCMA();
@@ -213,9 +256,15 @@ public class MainApp
 			else
 			{
 				consTextIndex+=5;
-				System.out.println(CONSOLE_TEXT[consTextIndex]+fileName);
+				System.out.print(CONSOLE_TEXT[consTextIndex]+fileName+"... ");
 				writeCMA(sectionID,coefficient,hasMultiplyArg);
 			}
+			double timeForCMA = (endForCMA-startForCMA)/1000;
+			time+=timeForCMA;
+			System.out.println(timeForCMA + " s");
 		}
+		if (lang.equals("es")) System.out.println(String.format("Tiempo: %.3f s", time));
+		else if (lang.equals("pt")) System.out.println(String.format("Tempo: %.3f s", time));
+		else System.out.println(String.format("Time: %.3f s", time));
 	}
 }
