@@ -52,6 +52,7 @@ public class MainApp
 		+ "Aqui está a lista de todos os argumentos que podem ser usados. Use -h ou -help para recarregar a lista novamente.\n\n"
 		+ "* -r --> Lê os arquivos CMA e escreve os conteúdos deles em arquivos *.txt com o mesmo nome dos arquivos.\n"
 		+ "* -wm -> Sobrescreve os arquivos CMA multiplicando o conteúdo dele por um coeficiente.\n\n"
+		+ "* -wa -> Sobrescreve os arquivos CMA adicionando um coeficiente em seu conteúdo."
 		+ "Para a escrita dos comandos, o primeiro argumento precisa ser um número da seção que vai ser editada:\n"
 		+ "0 = POS-X, 1 = POS-Y, 2 = POS-Z, 3 = ROT-Y, 4 = ROT-X, 5 = ROT-Z.\n"
 		+ "NOTA: Para esse programa, X é esquerda/direita, Y é cima/baixo, Z é para trás/para frente.\n\n"
@@ -81,14 +82,7 @@ public class MainApp
 		if (cmaSizeWithoutHeader != currCMA.length()-16) return true;
 		
 		currCMA.seek(cmaSignatureOffset);
-		long nextSectionOffset=0; int cmaSectionCnt=0;
-		for (int i=0; i<cmaSectionTotal; i++)
-		{
-			//0x00000080 and 0x00000000 are both zero, but one is a float and the other is an integer
-			if (currCMA.readInt()!=0) cmaSectionCnt++;
-		}
-		if (cmaSectionCnt!=cmaSectionTotal) return true;
-		
+		long nextSectionOffset=0;
 		currCMA.seek(cmaSectionsAddress);
 		for (int i=0; i<cmaSectionTotal; i++)
 		{
